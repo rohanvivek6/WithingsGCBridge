@@ -81,6 +81,7 @@ class WithingsGCBridge:
 
     def sync(self) -> None:
         garmin = self.init_garmin()
+        logger.info("Logged into Garmin Connect")
         withings_access_token = self.init_withings()
 
         last_sync_path = Path("/data/.last_sync.txt")
@@ -292,5 +293,4 @@ if __name__ == "__main__":
             bridge.sync()
             time.sleep(UPDATE_INTERVAL)
     else:
-        bridge = WithingsGCBridge()
         bridge.sync()
