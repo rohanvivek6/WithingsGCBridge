@@ -73,7 +73,7 @@ class WithingsGCBridge:
         threading.Thread(
             target=lambda: app.run(
                 debug=False,
-                host=self.parsed_withings_uri.hostname,
+                host="0.0.0.0",
                 port=self.parsed_withings_uri.port,
             ),
             daemon=True,
