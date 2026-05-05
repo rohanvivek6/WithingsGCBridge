@@ -287,6 +287,7 @@ class WithingsGCBridge:
 
 
 if __name__ == "__main__":
+    logger.info("Starting WithingsGCBridge")
     bridge = WithingsGCBridge()
     if UPDATE_INTERVAL > 0:
         while True:

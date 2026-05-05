@@ -13,5 +13,7 @@ COPY ./main.py /app/main.py
 
 WORKDIR /app
 
+RUN echo "HELLOW WORKDS"
+
 # set entrypoint
 ENTRYPOINT [ "python", "main.py"]
