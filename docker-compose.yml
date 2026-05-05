@@ -9,3 +9,4 @@ services:
       - "5681:5681"
     volumes:
       - ".:/app"
+      - "/home/docker/configs/withingsGarminSync/config:/data"

@@ -73,7 +73,7 @@ class WithingsGCBridge:
         threading.Thread(
             target=lambda: app.run(
                 debug=False,
-                host=self.parsed_withings_uri.hostname,
+                host="0.0.0.0",
                 port=self.parsed_withings_uri.port,
             ),
             daemon=True,
@@ -81,6 +81,7 @@ class WithingsGCBridge:
 
     def sync(self) -> None:
         garmin = self.init_garmin()
+        logger.info("Logged into Garmin Connect")
         withings_access_token = self.init_withings()
 
         last_sync_path = Path("/data/.last_sync.txt")
@@ -286,11 +287,11 @@ class WithingsGCBridge:
 
 
 if __name__ == "__main__":
+    logger.info("Starting WithingsGCBridge")
     bridge = WithingsGCBridge()
     if UPDATE_INTERVAL > 0:
         while True:
             bridge.sync()
             time.sleep(UPDATE_INTERVAL)
     else:
-        bridge = WithingsGCBridge()
         bridge.sync()
