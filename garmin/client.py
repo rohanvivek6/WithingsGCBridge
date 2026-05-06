@@ -63,6 +63,7 @@ class GarminClient:
                     weight=measurement.weight,
                     percent_fat=measurement.percent_fat,
                     muscle_mass=measurement.muscle_mass,
+                    bone_mass=measurement.bone_mass,
                 )
                 logger.info(f"added {measurement} to Garmin Connect")
         except (

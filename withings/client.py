@@ -17,7 +17,7 @@ class WithingsClient:
         headers = {"Authorization": "Bearer " + self.access_token}
         payload: dict[str, Any] = {
             "action": "getmeas",
-            "meastypes": "1,6,76",
+            "meastypes": "1,6,76,88",
             "category": 1,
             "lastupdate": int(last_sync.timestamp()),
         }
@@ -43,4 +43,10 @@ class WithingsClient:
 
         date = datetime.datetime.fromtimestamp(payload["date"])
         by_type = {m["type"]: standardize(m) for m in payload["measures"]}
-        return Measurement(date, by_type.get(1), by_type.get(6), by_type.get(76))
+        return Measurement(
+            datetime=date,
+            weight=by_type.get(1),
+            percent_fat=by_type.get(6),
+            muscle_mass=by_type.get(76),
+            bone_mass=by_type.get(88),
+        )
