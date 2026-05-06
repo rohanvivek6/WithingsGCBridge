@@ -9,3 +9,4 @@ class Measurement:
     weight: float
     percent_fat: Optional[float]
     muscle_mass: Optional[float]
+    bone_mass: Optional[float] = None
