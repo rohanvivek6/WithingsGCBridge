@@ -1,11 +1,8 @@
 import datetime
 import logging
-from pathlib import Path
 
 import requests
-import yaml
 import garminconnect
-from garth.exc import GarthHTTPError
 
 from models import Measurement
 
@@ -22,15 +19,19 @@ class GarminClient:
         try:
             garmin = garminconnect.Garmin()
             garmin.login(self.tokenstore)
-        except (FileNotFoundError, GarthHTTPError, garminconnect.GarminConnectAuthenticationError):
+        except (
+            FileNotFoundError,
+            garminconnect.GarminConnectAuthenticationError,
+            garminconnect.GarminConnectConnectionError,
+            garminconnect.GarminConnectInvalidFileFormatError,
+        ):
             logger.debug("Generating tokenstore...")
             try:
                 garmin = garminconnect.Garmin(self.email, self.password)
-                garmin.login()
-                garmin.garth.dump(self.tokenstore)
+                garmin.login(self.tokenstore)
             except (
                 FileNotFoundError,
-                GarthHTTPError,
+                garminconnect.GarminConnectConnectionError,
                 garminconnect.GarminConnectAuthenticationError,
                 requests.exceptions.HTTPError,
             ) as err:
@@ -58,10 +59,10 @@ class GarminClient:
                     microsecond=123456,  # fake microseconds required by garminconnect
                 )
                 garmin.add_body_composition(
+                    timestamp=timestamp.isoformat(),
                     weight=measurement.weight,
                     percent_fat=measurement.percent_fat,
                     muscle_mass=measurement.muscle_mass,
-                    timestamp=timestamp.isoformat(),
                 )
                 logger.info(f"added {measurement} to Garmin Connect")
         except (
@@ -69,7 +70,6 @@ class GarminClient:
             garminconnect.GarminConnectAuthenticationError,
             garminconnect.GarminConnectTooManyRequestsError,
             requests.exceptions.HTTPError,
-            GarthHTTPError,
         ) as err:
             logger.error(err)
             return False
