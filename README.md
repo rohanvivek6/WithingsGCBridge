@@ -5,6 +5,48 @@ Docker container and be scheduled to run by the host system.
 
 Now synchronizes body fat and muscle mass, thanks to @ohshazbot!
 
+## Project Structure
+
+```
+WithingsGCBridge/
+├── main.py           # Entry point: reads env vars, starts the bridge
+├── bridge.py         # Sync orchestration (Withings → Garmin)
+├── config.py         # Loads and validates secrets.yaml
+├── models.py         # Measurement data model
+├── withings/
+│   ├── auth.py       # OAuth2 flow and token refresh
+│   └── client.py     # Withings measurements API
+└── garmin/
+    ├── client.py     # Garmin Connect login and upload
+```
+
+## Local Development Setup
+
+**Prerequisites:** Python 3.10+
+
+1. Clone the repo and install dependencies:
+   ```bash
+   git clone <repo-url>
+   cd WithingsGCBridge
+   pip install -r requirements.txt
+   ```
+
+2. Create your `secrets.yaml` (see [Secrets, Keys etc...](#secrets-keys-etc) below) and place it at `/data/secrets.yaml`, or adjust the path in `config.py`.
+
+3. Run directly:
+   ```bash
+   python main.py
+   ```
+   On first run, your browser will open for Withings OAuth authorization. Tokens are saved to `/data/.tokenstore/` for subsequent runs.
+
+**Environment variables:**
+
+| Variable | Default | Description |
+|---|---|---|
+| `UPDATE_INTERVAL` | `0` | Seconds between syncs. `0` = run once and exit. |
+| `WITHINGS_PORT` | `5681` | Port for the OAuth callback server. |
+| `LOG_LEVEL` | `INFO` | Logging verbosity (`DEBUG`, `INFO`, `WARNING`, `ERROR`). |
+
 ## Build
 Build the docker image with
 ```

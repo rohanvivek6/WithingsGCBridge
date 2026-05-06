@@ -8,12 +8,12 @@ RUN mkdir /app
 COPY ./requirements.txt /app/requirements.txt
 RUN pip install -r /app/requirements.txt
 
-# copy script file
-COPY ./main.py /app/main.py
+# copy application
+COPY ./main.py ./bridge.py ./config.py ./models.py /app/
+COPY ./withings /app/withings
+COPY ./garmin /app/garmin
 
 WORKDIR /app
-
-RUN echo "HELLOW WORKDS"
 
 # set entrypoint
 ENTRYPOINT [ "python", "main.py"]

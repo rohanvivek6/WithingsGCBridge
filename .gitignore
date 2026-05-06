@@ -1,6 +1,7 @@
 secrets.yaml
 .tokenstore
-.pyc
+*.pyc
+__pycache__/
 .devcontainer
 .vscode
 .last_sync.txt
