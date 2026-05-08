@@ -6,6 +6,8 @@ import requests
 
 from models import Measurement
 
+_TIMEOUT = (10, 30)  # (connect seconds, read seconds)
+
 logger = logging.getLogger("wt_gc_bridge")
 
 
@@ -23,7 +25,8 @@ class WithingsClient:
         }
         logger.debug("Requesting measurements from Withings...")
         result = requests.get(
-            "https://wbsapi.withings.net/v2/measure", headers=headers, params=payload
+            "https://wbsapi.withings.net/v2/measure", headers=headers, params=payload,
+            timeout=_TIMEOUT
         ).json()
         logger.debug(f"Withings response: {result}")
 

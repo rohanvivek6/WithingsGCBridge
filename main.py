@@ -18,7 +18,10 @@ if __name__ == "__main__":
     bridge = WithingsGCBridge(config)
     if UPDATE_INTERVAL > 0:
         while True:
-            bridge.sync()
+            try:
+                bridge.sync()
+            except Exception:
+                logger.exception("Sync failed; will retry next interval")
             time.sleep(UPDATE_INTERVAL)
     else:
         bridge.sync()
