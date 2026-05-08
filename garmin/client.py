@@ -34,6 +34,8 @@ class GarminClient:
                 garminconnect.GarminConnectConnectionError,
                 garminconnect.GarminConnectAuthenticationError,
                 requests.exceptions.HTTPError,
+                requests.exceptions.Timeout,
+                requests.exceptions.ConnectionError,
             ) as err:
                 logger.error("Could not login to Garmin Connect")
                 raise err
@@ -71,6 +73,8 @@ class GarminClient:
             garminconnect.GarminConnectAuthenticationError,
             garminconnect.GarminConnectTooManyRequestsError,
             requests.exceptions.HTTPError,
+            requests.exceptions.Timeout,
+            requests.exceptions.ConnectionError,
         ) as err:
             logger.error(err)
             return False
