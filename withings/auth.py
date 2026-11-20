@@ -10,6 +10,8 @@ from typing import Any
 
 import requests
 from flask import Flask, request
+
+_TIMEOUT = (10, 30)  # (connect seconds, read seconds)
 from werkzeug.datastructures import MultiDict
 
 logger = logging.getLogger("wt_gc_bridge")
@@ -85,8 +87,9 @@ class WithingsAuth:
             "redirect_uri": urllib.parse.urlunparse(self.parsed_uri),
         }
         logger.debug("Requesting access token...")
-        result = requests.get("https://wbsapi.withings.net/v2/oauth2", params=payload).json()["body"]
-        print(f"Got result: {result}")
+        result = requests.get(
+            "https://wbsapi.withings.net/v2/oauth2", params=payload, timeout=_TIMEOUT
+        ).json()["body"]
         access_token = result["access_token"]
         refresh_token = result["refresh_token"]
         logger.debug("Got access token.")
@@ -101,7 +104,9 @@ class WithingsAuth:
             "client_secret": self.client_secret,
             "refresh_token": refresh_token,
         }
-        result = requests.get("https://wbsapi.withings.net/v2/oauth2", params=payload).json()["body"]
+        result = requests.get(
+            "https://wbsapi.withings.net/v2/oauth2", params=payload, timeout=_TIMEOUT
+        ).json()["body"]
         access_token = result["access_token"]
         refresh_token = result["refresh_token"]
         logger.debug("Got new access token.")
